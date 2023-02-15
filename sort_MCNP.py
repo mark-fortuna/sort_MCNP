@@ -1,11 +1,21 @@
 # script to sort all cells and surfaces by name
 
-# comments and comment block are bound to next entity (cell or surface)
+# comments and comment blocks are bound to next entity (cell or surface)
 
 import regex as re
+import sys
 
-file_name = 'inp.i'
-out_name = 'inp-out-3.i'
+#  READING TERMINAL ARGUMENTS
+if len(sys.argv) == 1:
+    print('\nTo run sort_MCNP.py specify file to be sorted. Eg.:\n  python sort_MCNP.py inpt.i [new_name.i]\nHere, the argument in square brackets is optional.\n')
+    quit()
+elif len(sys.argv) == 2:
+    file_name = sys.argv[1]
+    out_name = file_name + '-sorted.i'
+else: 
+    file_name = sys.argv[1]
+    out_name = sys.argv[2]
+
 delete_comments = False
 
 class Card:
