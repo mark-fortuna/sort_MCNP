@@ -8,7 +8,11 @@ sort_MCNP sorts the newly renamed cells and surfaces by their numerical ID.
 sort_MCNP also sorts comments and comment blocks.
 It assigns multiple comment lines to the first entity (cell or surface) after them.
 
-## Running ##
+Due to it's use of f-strings, the script is compatible with python version 3.6 or later.
+It can be modified to be compatible with python 2 by replacing f-strings
+with %-formating or the use of `str.format()`.
+
+## How to use ##
 Copy the script into the folder with the MCNP input you wish to sort.
 Run from terminal as
   
