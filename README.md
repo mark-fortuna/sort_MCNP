@@ -8,6 +8,14 @@ sort_MCNP sorts the newly renamed cells and surfaces by their numerical ID.
 sort_MCNP also sorts comments and comment blocks.
 It assigns multiple comment lines to the first entity (cell or surface) after them.
 
+## Running ##
+Copy the script into the folder with the MCNP input you wish to sort.
+Run from terminal as
+  
+  `python sort_MCNP.py input.i [output_name.i]`,
+
+where the output name is an optional argument.
+
 ## Bugs ##
 None of the following bugs limit the functionality of the MCNP input. However, they need to be considered to avoid confusion.
  - In it's current form sort_MCNP doesn't correctly assign comments in the middle of multiline cell or surface definitions.
