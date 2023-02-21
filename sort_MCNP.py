@@ -1,11 +1,13 @@
 # script to sort all cells and surfaces by name
-
+#
 # comments and comment blocks are bound to next entity (cell or surface)
 
 import regex as re
 import sys
 
-#  READING TERMINAL ARGUMENTS
+
+###   READ TERMINAL ARGUMENTS   ###
+
 if len(sys.argv) == 1:
     print('\nTo run sort_MCNP.py specify file to be sorted. Eg.:\n  python sort_MCNP.py inpt.i [new_name.i]\nHere, the argument in square brackets is optional.\n')
     quit()
@@ -18,6 +20,10 @@ else:
 
 delete_comments = False
 
+
+###   CLASSES   ###
+
+# a Card object is either a Cell definition or a Surface definition
 class Card:
     def __init__(self, name, definition, entity_type):
         self.type = entity_type
@@ -58,14 +64,18 @@ class Card:
         return f'{self.type}'
 
 
+###   FUNCTIONS   ###
+
+# The following functions are performed on individual MCNP input lines
+
 def previous_card(line):
-    # checks if line describes previous card
-    #   Line is multiline description --> return TRUE
-    #   Line is new entity --> return FALSE 
+    # checks if 'line' describes previous card
+    #   'line' is multiline description --> return TRUE
+    #   'line' is new entity --> return FALSE 
     return bool(re.search(r'^(\s{5})', line))
 
 def comment(line):
-    # is line a comment?
+    # is 'line' a comment?
     return bool(re.search(r'^c', line, re.IGNORECASE))
 
 def seperate_name_and_definition(line):
@@ -75,6 +85,9 @@ def seperate_name_and_definition(line):
     end_of_name = match_name.end()
     definition = line[end_of_name:]
     return name, definition
+
+
+###   MAIN   ###
 
 file = open(file_name, 'r')
 everything = file.read()
@@ -87,7 +100,7 @@ other_lines = other.split('\n')
 
 stored_comment = []
 
-## MAKE CELL OBJECTS ##
+##  MAKE CELL OBJECTS  ##
 cell_cards = []
 for i,l in enumerate(cell_lines):
     # if first line starts with
@@ -106,8 +119,7 @@ for i,l in enumerate(cell_lines):
         cell_cards[-1].PrependComment(stored_comment)
         stored_comment = []
 
-
-## MAKE SURFACE OBJECTS ##
+##  MAKE SURFACE OBJECTS  ##
 surf_cards = []
 for i,l in enumerate(surf_lines):
     if previous_card(l):
@@ -124,10 +136,11 @@ for i,l in enumerate(surf_lines):
 print(f'number of cells = {len(cell_cards)}')
 print(f'number of surfaces = {len(surf_cards)}')
 
+##  SORT CELLS AND SURFACES  ##
 sorted_cell_cards = sorted(cell_cards, key=lambda x: int(x.name), reverse=False)
 sorted_surf_cards = sorted(surf_cards, key=lambda x: int(x.name), reverse=False)
 
-# write to output
+##  WRITE TO OUTPUT FILE  ##
 out = open(out_name, 'w')
 out.write(f'{title_line}\n')
 for i in sorted_cell_cards:
