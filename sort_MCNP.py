@@ -13,7 +13,9 @@ if len(sys.argv) == 1:
     quit()
 elif len(sys.argv) == 2:
     file_name = sys.argv[1]
-    out_name = file_name + '-sorted.i'
+    suffix = '.' + file_name.split('.')[-1]
+    no_suffix = re.sub(suffix, '', file_name)
+    out_name = no_suffix + '-sorted' + suffix
 else: 
     file_name = sys.argv[1]
     out_name = sys.argv[2]
